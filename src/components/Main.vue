@@ -11,24 +11,12 @@
         <h3>Project Team 3 Demo Prototype</h3>
         <hr>
 
-        <label for="example">Example Input</label>
-        <select name="example" id="example">
-            <option value="variable 1">variable 1</option>
-            <option value="variable 2">variable 2</option>
-            <option value="variable 3">variable 3</option>
-            <option value="variable 4">variable 4</option>
-        </select>
-
-        <br/>
-        <hr>
-
-        <label for="example2">Example Input 2</label>
-        <select name="example2" id="example2">
-            <option value="variable 1">variable 1</option>
-            <option value="variable 2">variable 2</option>
-            <option value="variable 3">variable 3</option>
-            <option value="variable 4">variable 4</option>
-        </select>
+        <SingleSelect :options="options_map" label="All Options" :onValueChange="print_change('all')"/>
+        <SingleSelect :options="quantitative_options" label="Quantitative Options"  :onValueChange="print_change('all')"/>
+        <SingleSelect :options="cateogorical_options" label="Categorical Options" default_value="Gender" :onValueChange="print_change('all')"/>
+        <MultiSelect :options="options_map" label="All Options" :onValueChange="print_change('all')"/>
+        <MultiSelect :options="quantitative_options" label="Quantitative Options" :onValueChange="print_change('all')"/>
+        <MultiSelect :options="cateogorical_options" label="Categorical Options" :onValueChange="print_change('all')"/>
     </div>
     </div>
 
@@ -44,6 +32,18 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import MultiSelect from './MultiSelect.vue';
+import SingleSelect from './SingleSelect.vue';
+
+const print_change = (label: string) => (value: any) => {
+    console.log(`[${label}] ${value}`);
+}
+
+const make_options = (map: Object) => {
+    return Object.entries(map).map(entry => {
+        return {label: entry[1], value: entry[0]};
+    });
+}
 
 export default defineComponent({
     setup() {
@@ -51,12 +51,53 @@ export default defineComponent({
         console.log("in Main");
     },
     props: {
-        msg: {
-            type: String,
-            required: true
-        }
+        csv_wrapper: Object
     },
     data: () => {
+        const label_value_map = {
+            "Customer_Age": "Age",
+            "Gender": "Gender",
+            "Dependent_count": "Dependent Count",
+            "Education_Level": "Education",
+            "Marital_Status": "Marital Status",
+            "Income_Category": "Income",
+            "Months_on_book": "Months",
+            "Months_Inactive_12_mon":  "Inactive Months",
+            "Contacts_Count_12_mon": "Contact Count",
+            "Credit_Limit": "Credit Limit",
+            "Total_Revolving_Bal": "Total Balance",
+            "Avg_Open_To_Buy": "Average Open To Buy",
+            "Total_Amt_Chng_Q4_Q1": "Amount Change Q4 Q1",
+            "Total_Trans_Amt": "Total Transaction Amount",
+            "Total_Trans_Ct": "Total Transaction Count",
+            "Total_Ct_Chng_Q4_Q1": "Total Count Change Q4 Q1",
+            "Avg_Utilization_Ratio": "Average Utilization Ratio",
+        }
+
+        const cateogorical_map = {
+            "Gender": "Gender",
+            "Education_Level": "Education",
+            "Marital_Status": "Marital Status",
+            "Income_Category": "Income",
+        }
+
+        const quantitative_map = {
+            "Customer_Age": "Age",
+            "Dependent_count": "Dependent Count",
+            "Months_on_book": "Months",
+            "Months_Inactive_12_mon":  "Inactive Months",
+            "Contacts_Count_12_mon": "Contact Count",
+            "Credit_Limit": "Credit Limit",
+            "Total_Revolving_Bal": "Total Balance",
+            "Avg_Open_To_Buy": "Average Open To Buy",
+            "Total_Amt_Chng_Q4_Q1": "Amount Change Q4 Q1",
+            "Total_Trans_Amt": "Total Transaction Amount",
+            "Total_Trans_Ct": "Total Transaction Count",
+            "Total_Ct_Chng_Q4_Q1": "Total Count Change Q4 Q1",
+            "Avg_Utilization_Ratio": "Average Utilization Ratio",
+        }
+
+
         return {
             options: {
                 chart: {
@@ -73,6 +114,14 @@ export default defineComponent({
 
             is_comparison: false,
             is_relationship: true,
+
+
+            print_change: print_change,
+
+            options_map: make_options(label_value_map),
+            cateogorical_options: make_options(cateogorical_map),
+            quantitative_options: make_options(quantitative_map),
+            selected_foo: [],
         }
     },
     methods: {
@@ -85,7 +134,8 @@ export default defineComponent({
                 this.is_comparison = true;
             }
         }
-    }
+    },
+    components: {MultiSelect, SingleSelect},
 });
 
 </script>
