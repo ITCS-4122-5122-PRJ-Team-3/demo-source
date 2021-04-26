@@ -1,5 +1,5 @@
 <template>
-  <Main :csv_wrapper="data"/>
+  <Main :data="data.data"/>
 </template>
 
 <script lang="ts">
@@ -35,7 +35,7 @@ export default defineComponent({
       */
 
       return {
-        data: csv,
+        data: Object.freeze(csv),
       }
     },
     setup() {

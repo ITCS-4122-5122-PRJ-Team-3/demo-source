@@ -22,7 +22,6 @@ export interface SelectEntry {
 
 export default defineComponent({
   setup() {
-    console.log("in SingleSelect");
   },
   components: {
     Multiselect,
