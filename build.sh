@@ -15,6 +15,6 @@ cd dist
 git init
 git add -A
 git commit -m 'deploy'
-git push --set-upstream https://github.com/ITCS-4122-5122-PRJ-Team-3/demo.git main -f
+git push --set-upstream https://github.com/ITCS-4122-5122-PRJ-Team-3/demo.git HEAD:main -f
 
 cd -
