@@ -1,9 +1,13 @@
 <template>
-  <Main :data="data.data"/>
+  <div id="nav">
+    <router-link to="/">Home</router-link> |
+    <router-link to="/vis">Visualizations</router-link> | 
+    <router-link to="/about">About</router-link>
+  </div>
+  <router-view :data="data.data"/>
 </template>
 
 <script lang="ts">
-import Main from './components/Main.vue'
 import { defineComponent } from 'vue'
 import Papa from 'papaparse';
 import DataString from './assets/data.csv';
@@ -43,7 +47,7 @@ export default defineComponent({
     },
     props: {
     },
-    components: {Main}
+    components: {}
 });
 
 
@@ -56,6 +60,19 @@ export default defineComponent({
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
+
+#nav {
+  padding: 30px;
+}
+
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-active {
+  color: #42b983;
+}
+
 </style>
