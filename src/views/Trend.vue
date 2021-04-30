@@ -1,5 +1,4 @@
 <template>
-<div class="viz-container">
   <div class="select-container">
     <SingleSelect
       :options="quantitative_options"
@@ -8,7 +7,7 @@
       :onValueChange="(value) => set('y_axis', value)"
     />
     <SingleSelect
-      :options="categorical_options"
+      :options="all_options"
       label="X-Axis"
       :default_value="x_axis"
       :onValueChange="(value) => set('x_axis', value)"
@@ -17,12 +16,11 @@
   <div class="chart-container">
     <apexchart
       width="750"
-      type="line"
+      type="scatter"
       :options="chart_options.options"
       :series="chart_options.series"
     ></apexchart>
   </div>
-</div>
 </template>
 
 <script lang="ts">
@@ -75,53 +73,33 @@ export default defineComponent({
     },
     render() {
       console.log("rendering");
-      let categories: { [index: string]: { sum: number; count: number } } = {};
       //@ts-ignore
-      this.data?.forEach((entry: { [x: string]: any }) => {
-        let category = entry[this.x_axis];
-        if (category === undefined) {
-          return;
-        }
+      const series_data = this.data?.map( (entry: { [x: string]: any }) => {
+          let x = entry[this.x_axis];
+          let y = entry[this.y_axis];
 
-        if (!categories[category]) {
-          categories[category] = {
-            sum: 0,
-            count: 0,
-          };
-        }
-
-        categories[category].sum += entry[this.y_axis];
-        categories[category].count += 1;
+          return [x, y];
       });
 
-      const series_data = Object.values(categories).map(
-        (value) => value.sum / value.count
-      );
-
-      let keys = Object.keys(categories);
       this.chart_options = {
         options: {
           chart: {
             id: "vuechart-example",
-            //@ts-ignore
-            animations: {
-              enabled: keys.length > 50 ? false : true,
-            },
           },
           xaxis: {
             //@ts-ignore
-            categories: keys,
-
             title: {
               text: this.x_axis,
             },
           },
 
-          tickAmount: keys.length > 25 ? 25 : keys.length,
+         // tickAmount: keys.length > 25 ? 25 : keys.length,
 
+/*
           animations: {
             enabled: keys.length > 50 ? false : true,
           },
+          */
 
           dataLabels: {
             formatter: (label: string) => {
@@ -154,6 +132,7 @@ export default defineComponent({
         series: [
           {
             name: "series-1",
+            //@ts-ignore
             data: series_data,
           },
         ],
@@ -163,3 +142,4 @@ export default defineComponent({
   components: { SingleSelect },
 });
 </script>
+

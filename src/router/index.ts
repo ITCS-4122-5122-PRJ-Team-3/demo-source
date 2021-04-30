@@ -3,6 +3,7 @@ import Home from '../views/Home.vue';
 import Main from '../views/Main.vue';
 import Comparison from '../views/Comparison.vue';
 import Relationship from '../views/Relationship.vue';
+import Trend from '../views/Trend.vue';
 //import Landing from '../views/Landing.vue';
 
 const routes: Array<RouteRecordRaw> = [
@@ -33,6 +34,11 @@ const routes: Array<RouteRecordRaw> = [
         path: 'relationship',
         name: 'Relationship',
         component: Relationship,
+      },
+      {
+        path: 'trend',
+        name: 'Trend',
+        component: Trend,
       }
     ]
   },

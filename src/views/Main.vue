@@ -2,6 +2,7 @@
   <div class="tab">
     <router-link class="tablinks" :to="{ name: 'Comparison' }">Comparison</router-link>
     <router-link class="tablinks" :to="{ name: 'Relationship' }">Relationship</router-link>
+    <!--<router-link class="tablinks" :to="{ name: 'Trend' }">Trend</router-link>-->
   </div>
   <!-- Side navigation -->
   <div class="tabcontent">
@@ -12,59 +13,6 @@
       :all_options="all_options"
     />
   </div>
-  <!--
-      <SingleSelect
-        :options="options_map"
-        label="All Options"
-        :onValueChange="print_change('all')"
-      />
-      <SingleSelect
-        :options="quantitative_options"
-        label="Quantitative Options"
-        :onValueChange="print_change('all')"
-      />
-      <SingleSelect
-        :options="cateogorical_options"
-        label="Categorical Options"
-        default_value="Gender"
-        :onValueChange="print_change('all')"
-      />
-      <MultiSelect
-        :options="options_map"
-        label="All Options"
-        :onValueChange="print_change('all')"
-      />
-      <MultiSelect
-        :options="quantitative_options"
-        label="Quantitative Options"
-        :onValueChange="print_change('all')"
-      />
-      <MultiSelect
-        :options="cateogorical_options"
-        label="Categorical Options"
-        :onValueChange="print_change('all')"
-      />
-      -->
-
-  <!--
-  <div class="content">
-    <div v-if="is_comparison">
-      <apexchart
-        width="750"
-        type="bar"
-        :options="chart_options.options"
-        :series="chart_options.series"
-      ></apexchart>
-    </div>
-    <div v-if="is_relationship">
-      <apexchart
-        width="750"
-        type="line"
-        :options="chart_options.options"
-        :series="chart_options.series"
-      ></apexchart>
-    </div>
-    -->
 </template>
 
 <script lang="ts">
@@ -140,7 +88,7 @@ export default defineComponent({
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 h3 {
   margin: 40px 0 0;
 }
@@ -201,11 +149,18 @@ a {
 
 .select-container {
     display: flex;
-    justify-content: center;
+    
+    flex-direction: column;
 }
 
 .chart-container {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+}
+
+.viz-container {
+    display: flex;
+    justify-content: space-around;
 }
 </style>
