@@ -40,6 +40,12 @@ export default defineComponent({
     label: String,
     onValueChange: Function,
   },
+
+  watch: {
+    default_value(value) {
+      this.value = value;
+    }
+  }
 });
 </script>
 
