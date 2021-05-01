@@ -13,7 +13,7 @@
         :default_value="x_axis"
         :onValueChange="(value) => set('x_axis', value)"
       />
-      <div v-if="quantize === true">
+      <div v-if="quantize">
         <SingleSelect
           :options="quantize_options"
           label="Quantization Factor"
@@ -22,11 +22,19 @@
         />
       </div>
       <SingleSelect
-        :options="categorical_options"
+        :options="all_options"
         label="Subsets"
         :default_value="subsets"
         :onValueChange="(value) => set('subsets', value)"
       />
+      <div v-if="sub_quantize">
+        <SingleSelect
+          :options="quantize_options"
+          label="Subsets Quantization Factor"
+          :default_value="sub_quantization_factor"
+          :onValueChange="(value) => set('sub_quantization_factor', value)"
+        />
+      </div>
 
       <h3>Questions</h3>
       <router-link :to="{name: 'Comparison', query: {x:'Gender', y:'Credit_Limit'}}">What is the average credit limit versus gender?</router-link>
@@ -227,6 +235,8 @@ export default defineComponent({
       quantization_factor: '5',
       quantize: false,
       quantize_options: quantize_options,
+      sub_quantization_factor: '5',
+      sub_quantize: false,
     };
   },
   methods: {
@@ -239,6 +249,11 @@ export default defineComponent({
         //@ts-ignore
         route.query['quantization'] = this.quantization_factor;
       }
+      //@ts-ignore
+      if (quantitative_map[this.subsets]) {
+        //@ts-ignore
+        route.query['sub_quantization'] = this.sub_quantization_factor;
+      }
       this.$router.push(route);
     },
     render() {
@@ -246,14 +261,17 @@ export default defineComponent({
       let categories: { [index: string]: { sum: number; count: number, sets: {[index: string]: {sum: number; count: number;}} } } = {};
       let subset_keys:{[index: string]: Boolean } = {};
 
-      let quantize = false;
+      //@ts-ignore
+      let quantize = quantitative_map[this.x_axis] || false;
+      //@ts-ignore
+      let sub_quantize = quantitative_map[this.subsets] || false;
       let min = Number.MAX_VALUE;
       let max = Number.MIN_VALUE;
+      let sub_min = Number.MAX_VALUE;
+      let sub_max = Number.MIN_VALUE
       //@ts-ignore
-      //@ts-ignore
-      if (quantitative_map[this.x_axis]) {
+      if (quantize || sub_quantize) {
         console.log('quantizing')
-        quantize = true; 
 
         //@ts-ignore
         this.data?.forEach((entry: { [x: string]: any }) => {
@@ -265,11 +283,24 @@ export default defineComponent({
           if (value < min) {
             min = value;
           }
+
+
+          value = entry[this.subsets];        
+          if (value > sub_max) {
+            sub_max = value;
+          }
+
+          if (value < sub_min) {
+            sub_min = value;
+          }
         })
       }
 
       let quantization_factor = Number(this.quantization_factor);
       let quantize_mod = (max - min) / quantization_factor;
+
+      let sub_quantization_factor = Number(this.sub_quantization_factor);
+      let sub_quantize_mod = (sub_max - sub_min) / sub_quantization_factor;
 
       //@ts-ignore
       this.data?.forEach((entry: { [x: string]: any }) => {
@@ -297,6 +328,16 @@ export default defineComponent({
         }
 
         let set = entry[this.subsets];
+        if (sub_quantize) {
+          let bucket = Math.floor((set - sub_min) / sub_quantize_mod);
+          if (bucket == sub_quantization_factor) {
+            bucket -= 1;
+          }
+          let lower = sub_min + (sub_quantize_mod * bucket);
+          let upper = sub_min + (sub_quantize_mod * (bucket + 1));
+          set = `${lower.toFixed(2)} - ${upper.toFixed(2)}`;
+        }
+
         if (set && !categories[category].sets[set]) {
             categories[category].sets[set] = {
                 sum: 0,
@@ -370,7 +411,7 @@ export default defineComponent({
 
 
       this.quantize = quantize;
-      console.log(quantize);
+      this.sub_quantize = sub_quantize;
 
       this.bar_chart_options = {
         options: {
@@ -435,11 +476,11 @@ export default defineComponent({
 
       this.subset_chart_options = {
         series: [
+          ...subset_series,
           {
             name: 'Overall',
             data: all_series_data,
           },
-          ...subset_series,
         ],
         options: {
           ...this.bar_chart_options.options,
@@ -555,6 +596,8 @@ export default defineComponent({
             this.subsets = to.query.subsets || this.subsets;
             //@ts-ignore
             this.quantization_factor = to.query.quantization || this.quantization_factor;
+            //@ts-ignore
+            this.sub_quantization_factor = to.query.sub_quantization || this.sub_quantization_factor;
             this.render();
         }    
        }
