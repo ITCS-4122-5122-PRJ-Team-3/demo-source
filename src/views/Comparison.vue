@@ -284,7 +284,6 @@ export default defineComponent({
             min = value;
           }
 
-
           value = entry[this.subsets];        
           if (value > sub_max) {
             sub_max = value;
