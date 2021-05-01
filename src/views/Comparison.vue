@@ -16,7 +16,7 @@
       <div v-if="quantize === true">
         <SingleSelect
           :options="quantize_options"
-          label="Quantize Factor"
+          label="Quantization Factor"
           :default_value="quantization_factor"
           :onValueChange="(value) => set('quantization_factor', value)"
         />
