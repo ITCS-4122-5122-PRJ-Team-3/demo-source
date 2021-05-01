@@ -4,7 +4,6 @@
     <router-link class="tablinks" :to="{ name: 'Relationship' }">Relationship</router-link>
     <!--<router-link class="tablinks" :to="{ name: 'Trend' }">Trend</router-link>-->
   </div>
-  <!-- Side navigation -->
   <div class="tabcontent">
     <router-view
       :data="data"
@@ -31,16 +30,16 @@ export const label_value_map = {
   Education_Level: "Education",
   Marital_Status: "Marital Status",
   Income_Category: "Income",
-  Months_on_book: "Months",
-  Months_Inactive_12_mon: "Inactive Months",
-  Contacts_Count_12_mon: "Contact Count",
+  //Months_on_book: "Months",
+  //Months_Inactive_12_mon: "Inactive Months",
+  //Contacts_Count_12_mon: "Contact Count",
   Credit_Limit: "Credit Limit",
   Total_Revolving_Bal: "Total Balance",
   Avg_Open_To_Buy: "Average Open To Buy",
-  Total_Amt_Chng_Q4_Q1: "Amount Change Q4 Q1",
+  //Total_Amt_Chng_Q4_Q1: "Amount Change Q4 Q1",
   Total_Trans_Amt: "Total Transaction Amount",
   Total_Trans_Ct: "Total Transaction Count",
-  Total_Ct_Chng_Q4_Q1: "Total Count Change Q4 Q1",
+  //Total_Ct_Chng_Q4_Q1: "Total Count Change Q4 Q1",
   Avg_Utilization_Ratio: "Average Utilization Ratio",
 };
 
@@ -54,16 +53,16 @@ export const cateogorical_map = {
 export const quantitative_map = {
   Customer_Age: "Age",
   Dependent_count: "Dependent Count",
-  Months_on_book: "Months",
-  Months_Inactive_12_mon: "Inactive Months",
-  Contacts_Count_12_mon: "Contact Count",
+  //Months_on_book: "Months",
+  //Months_Inactive_12_mon: "Inactive Months",
+  //Contacts_Count_12_mon: "Contact Count",
   Credit_Limit: "Credit Limit",
   Total_Revolving_Bal: "Total Balance",
   Avg_Open_To_Buy: "Average Open To Buy",
-  Total_Amt_Chng_Q4_Q1: "Amount Change Q4 Q1",
+  //Total_Amt_Chng_Q4_Q1: "Amount Change Q4 Q1",
   Total_Trans_Amt: "Total Transaction Amount",
   Total_Trans_Ct: "Total Transaction Count",
-  Total_Ct_Chng_Q4_Q1: "Total Count Change Q4 Q1",
+  //Total_Ct_Chng_Q4_Q1: "Total Count Change Q4 Q1",
   Avg_Utilization_Ratio: "Average Utilization Ratio",
 };
 
