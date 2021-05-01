@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <p>
-    Welcome to project team 3’s final project for ITCS 4122/5122 - Visual Analytics call of Spring 2021. We are Zachary Onisick, Iryna Naminat, Alec Goncharow, and Rachel Conforti.
+    Welcome to project team 3’s final project for ITCS 4122/5122 - Visual Analytics class of Spring 2021. We are Zachary Onisick, Iryna Naminat, Alec Goncharow, and Rachel Conforti.
     </p>
 
 
