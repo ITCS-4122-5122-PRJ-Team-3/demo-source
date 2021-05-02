@@ -46,4 +46,13 @@ export default {
 .home {
   margin: 0 20%;
 }
+
+.question-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.question-container a {
+  margin: 5px;
+}
 </style>

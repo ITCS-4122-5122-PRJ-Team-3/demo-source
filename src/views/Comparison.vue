@@ -37,17 +37,16 @@
       </div>
 
       <h3>Questions</h3>
+      <div class="question-container">
       <router-link :to="{name: 'Comparison', query: {x:'Gender', y:'Credit_Limit'}}">What is the average credit limit versus gender?</router-link>
       <router-link :to="{name: 'Comparison', query: {x:'Income_Category', y:'Credit_Limit'}}">What is the average credit limit versus income level?</router-link>
       <router-link :to="{name: 'Comparison', query: {x:'Gender', y:'Avg_Utilization_Ratio'}}">Which gender utilizies their credit card more?</router-link>
       <router-link :to="{name: 'Comparison', query: {x:'Income_Category', y:'Avg_Utilization_Ratio'}}">What is the average utilization by income?</router-link>
-      <router-link :to="{name: 'Comparison', query: {x:'Customer_Age', y: 'Credit_Limit', subsets: 'Education_Level', quantization: 5}}">How does average credit limit change with education and age?
-?</router-link>
-      <router-link :to="{name: 'Comparison', query: {x:'Dependent_count', y: 'Credit_Limit', subsets: 'Marital_Status', quantization: 5}}">How does dependent count and marital status influence credit limit?
-?</router-link>
-      <router-link :to="{name: 'Comparison', query: {x:'Customer_Age', y: 'Total_Trans_Amt', subsets: 'Total_Revolving_Bal', quantization: 5, sub_quantization: 5}}">How much does each age group send in total versus their runing total balance? (debt information)
-?</router-link>
+      <router-link :to="{name: 'Comparison', query: {x:'Customer_Age', y: 'Credit_Limit', subsets: 'Education_Level', quantization: 5}}">How does average credit limit change with education and age?</router-link>
+      <router-link :to="{name: 'Comparison', query: {x:'Dependent_count', y: 'Credit_Limit', subsets: 'Marital_Status', quantization: 5}}">How does dependent count and marital status influence credit limit?</router-link>
+      <router-link :to="{name: 'Comparison', query: {x:'Customer_Age', y: 'Total_Trans_Amt', subsets: 'Total_Revolving_Bal', quantization: 5, sub_quantization: 5}}">How much does each age group spend in total versus their running total balance?</router-link>
       <router-link :to="{name: 'Comparison', query: {x:'Gender', subsets: 'Education_Level'}}">Is there equal Educational level diversity for Men and Women?</router-link>
+    </div>
 
     </div>
     <div class="chart-container">

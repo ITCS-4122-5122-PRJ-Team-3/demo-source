@@ -37,6 +37,14 @@
       </div>
 
       <h3>Questions</h3>
+      <div class="question-container">
+      <router-link :to="{name: 'Relationship', query: {x:'Dependent_count', y: 'Avg_Utilization_Ratio', subsets: 'Gender', quantization: 10}}">What is the relationship between average utilization ratio and dependent count? 
+</router-link>
+      <router-link :to="{name: 'Relationship', query: {x:'Customer_Age', y: 'Total_Trans_Amt', subsets: 'Total_Revolving_Bal', quantization: 10, sub_quantization: 2}}">What is the relationship between transaction count, age, and total balance? 
+</router-link>
+      <router-link :to="{name: 'Relationship', query: {x:'Total_Revolving_Bal', y: 'Credit_Limit', subsets: 'Income_Category', quantization: 5}}">What is the relationships between credit limit, total balance, and income?
+</router-link>
+    </div>
     </div>
     <div class="chart-container">
       <apexchart
@@ -64,15 +72,18 @@ import { quantitative_map, label_value_map } from "./Main.vue";
 const quantize_options = [
   2,
   4,
+  5,
   8,
   10,
   16,
   20,
+  25,
   30,
   32,
   40,
   50,
   64,
+  75,
   100,
   128,
   256,
