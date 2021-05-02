@@ -2,11 +2,12 @@
   <div class="tab">
     <router-link class="tablinks" :to="{ name: 'Comparison' }">Comparison</router-link>
     <router-link class="tablinks" :to="{ name: 'Relationship' }">Relationship</router-link>
-    <!--<router-link class="tablinks" :to="{ name: 'Trend' }">Trend</router-link>-->
+    <router-link class="tablinks" :to="{ name: 'Trend' }">Linear Regression</router-link>
   </div>
   <div class="tabcontent">
     <router-view
       :data="data"
+      :soa_data="soa_data"
       :categorical_options="categorical_options"
       :quantitative_options="quantitative_options"
       :all_options="all_options"
@@ -70,6 +71,7 @@ export default defineComponent({
   setup() {},
   props: {
     data: Object,
+    soa_data: Object,
   },
   created() {
   },
@@ -151,8 +153,9 @@ a {
     
     flex-direction: column;
     flex-grow: 1;
-    width: 10%;
-    padding: 0 10%;
+    width: 15%;
+    padding-left: 10%;
+    padding-right: 10%;
 }
 
 .chart-container {

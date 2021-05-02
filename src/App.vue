@@ -4,7 +4,7 @@
     <router-link to="/vis">Visualizations</router-link> | 
     <router-link to="/about">About</router-link>
   </div>
-  <router-view :data="data.data"/>
+  <router-view :data="data.data" :soa_data="soa_data"/>
 </template>
 
 <script lang="ts">
@@ -24,7 +24,7 @@ export default defineComponent({
       through specific attributes of all data at a time, however I am not sure of the specific use
       case at the moment as the chart API's seem to not leverage this representation, I assume it
       can be useful at some point but not sure at the moment.
-
+      */
       let struct_of_arrays: {[index: string]: any[]} = {};
 
       //@ts-ignore
@@ -36,10 +36,10 @@ export default defineComponent({
       });
 
       console.log(struct_of_arrays);
-      */
 
       return {
         data: Object.freeze(csv),
+        soa_data: Object.freeze(struct_of_arrays)
       }
     },
     setup() {

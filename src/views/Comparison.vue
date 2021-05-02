@@ -41,6 +41,14 @@
       <router-link :to="{name: 'Comparison', query: {x:'Income_Category', y:'Credit_Limit'}}">What is the average credit limit versus income level?</router-link>
       <router-link :to="{name: 'Comparison', query: {x:'Gender', y:'Avg_Utilization_Ratio'}}">Which gender utilizies their credit card more?</router-link>
       <router-link :to="{name: 'Comparison', query: {x:'Income_Category', y:'Avg_Utilization_Ratio'}}">What is the average utilization by income?</router-link>
+      <router-link :to="{name: 'Comparison', query: {x:'Customer_Age', y: 'Credit_Limit', subsets: 'Education_Level', quantization: 5}}">How does average credit limit change with education and age?
+?</router-link>
+      <router-link :to="{name: 'Comparison', query: {x:'Dependent_count', y: 'Credit_Limit', subsets: 'Marital_Status', quantization: 5}}">How does dependent count and marital status influence credit limit?
+?</router-link>
+      <router-link :to="{name: 'Comparison', query: {x:'Customer_Age', y: 'Total_Trans_Amt', subsets: 'Total_Revolving_Bal', quantization: 5, sub_quantization: 5}}">How much does each age group send in total versus their runing total balance? (debt information)
+?</router-link>
+      <router-link :to="{name: 'Comparison', query: {x:'Gender', subsets: 'Education_Level'}}">Is there equal Educational level diversity for Men and Women?</router-link>
+
     </div>
     <div class="chart-container">
       <apexchart
@@ -75,66 +83,66 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import SingleSelect from "../components/SingleSelect.vue";
-import {quantitative_map, label_value_map} from './Main.vue';
+import { quantitative_map, label_value_map } from "./Main.vue";
 
-const quantize_options = [
-  2, 3, 4, 5, 6, 7, 8, 9, 10
-].map(val => String(val));
+const quantize_options = [2, 3, 4, 5, 6, 7, 8, 9, 10].map((val) => String(val));
 
 const income_order = {
-  'Less than $40K': 0,
-  '$40K - $60K': 1,
-  '$60K - $80K': 2,
-  '$80K - $120K': 3,
-  '$120K +': 4,
-  'Unknown': 5,
+  "Less than $40K": 0,
+  "$40K - $60K": 1,
+  "$60K - $80K": 2,
+  "$80K - $120K": 3,
+  "$120K +": 4,
+  Unknown: 5,
 };
 
 const education_order = {
-  'Uneducated': 0,
-  'High School': 1,
-  'College': 2,
-  'Graduate': 3,
-  'Doctorate': 4,
-  'Post-Graduate': 5,
-  'Unknown': 6,
+  Uneducated: 0,
+  "High School": 1,
+  College: 2,
+  Graduate: 3,
+  Doctorate: 4,
+  "Post-Graduate": 5,
+  Unknown: 6,
 };
 
 const marital_order = {
-  'Single': 0,
-  'Married': 1,
-  'Divorced': 2,
-  'Unknown': 3,
+  Single: 0,
+  Married: 1,
+  Divorced: 2,
+  Unknown: 3,
 };
 
 const key_sort = (category: string) => (first: string, second: string) => {
-  if (category === 'Income_Category') {
+  if (category === "Income_Category") {
     //@ts-ignore
     return income_order[first] - income_order[second];
   }
 
-  if (category === 'Education_Level') {
+  if (category === "Education_Level") {
     //@ts-ignore
     return education_order[first] - education_order[second];
   }
 
-  if (category === 'Marital_Status') {
+  if (category === "Marital_Status") {
     //@ts-ignore
     return marital_order[first] - marital_order[second];
   }
 
   //@ts-ignore
   if (quantitative_map[category]) {
-    let first_num = Number(first.split('-')[0]);
-    let second_num = Number(second.split('-')[0]);
+    let first_num = Number(first.split("-")[0]);
+    let second_num = Number(second.split("-")[0]);
     return first_num - second_num;
   }
 
   return first.localeCompare(second);
 };
 
-
-const entry_sort = (category: string) => (first: [string, any], second: [string, any]) => {
+const entry_sort = (category: string) => (
+  first: [string, any],
+  second: [string, any]
+) => {
   return key_sort(category)(first[0], second[0]);
 };
 
@@ -153,6 +161,12 @@ export default defineComponent({
     this.y_axis = this.$route.query.y || this.y_axis;
     //@ts-ignore
     this.subsets = this.$route.query.subsets || this.subsets;
+    //@ts-ignore
+    this.quantization_factor =
+      this.$route.query.quantization || this.quantization_factor;
+    //@ts-ignore
+    this.sub_quantization_factor =
+      this.$route.query.sub_quantization || this.sub_quantization_factor;
 
     this.render();
   },
@@ -176,7 +190,7 @@ export default defineComponent({
         ],
       },
 
-    subset_chart_options: {
+      subset_chart_options: {
         options: {
           chart: {
             id: "vuechart-example",
@@ -193,7 +207,7 @@ export default defineComponent({
         ],
       },
 
-     counts_chart_options: {
+      counts_chart_options: {
         options: {
           chart: {
             id: "vuechart-example",
@@ -210,7 +224,7 @@ export default defineComponent({
         ],
       },
 
-     stacked_counts_chart_options: {
+      stacked_counts_chart_options: {
         options: {
           chart: {
             id: "vuechart-example",
@@ -226,16 +240,14 @@ export default defineComponent({
           },
         ],
       },
-
-      
 
       x_axis: "Gender",
       y_axis: "Credit_Limit",
       subsets: "Education_Level",
-      quantization_factor: '5',
+      quantization_factor: "5",
       quantize: false,
       quantize_options: quantize_options,
-      sub_quantization_factor: '5',
+      sub_quantization_factor: "5",
       sub_quantize: false,
     };
   },
@@ -243,23 +255,31 @@ export default defineComponent({
     set(key: string, value: any) {
       //@ts-ignore
       this[key] = value;
-      let route = {name: 'Comparison', query: {x:this.x_axis, y: this.y_axis, subsets: this.subsets}};
-     //@ts-ignore
+      let route = {
+        name: "Comparison",
+        query: { x: this.x_axis, y: this.y_axis, subsets: this.subsets },
+      };
+      //@ts-ignore
       if (quantitative_map[this.x_axis]) {
         //@ts-ignore
-        route.query['quantization'] = this.quantization_factor;
+        route.query["quantization"] = this.quantization_factor;
       }
       //@ts-ignore
       if (quantitative_map[this.subsets]) {
         //@ts-ignore
-        route.query['sub_quantization'] = this.sub_quantization_factor;
+        route.query["sub_quantization"] = this.sub_quantization_factor;
       }
       this.$router.push(route);
     },
     render() {
-      console.log("rendering");
-      let categories: { [index: string]: { sum: number; count: number, sets: {[index: string]: {sum: number; count: number;}} } } = {};
-      let subset_keys:{[index: string]: Boolean } = {};
+      let categories: {
+        [index: string]: {
+          sum: number;
+          count: number;
+          sets: { [index: string]: { sum: number; count: number } };
+        };
+      } = {};
+      let subset_keys: { [index: string]: Boolean } = {};
 
       //@ts-ignore
       let quantize = quantitative_map[this.x_axis] || false;
@@ -268,14 +288,12 @@ export default defineComponent({
       let min = Number.MAX_VALUE;
       let max = Number.MIN_VALUE;
       let sub_min = Number.MAX_VALUE;
-      let sub_max = Number.MIN_VALUE
+      let sub_max = Number.MIN_VALUE;
       //@ts-ignore
       if (quantize || sub_quantize) {
-        console.log('quantizing')
-
         //@ts-ignore
         this.data?.forEach((entry: { [x: string]: any }) => {
-          let value = entry[this.x_axis];        
+          let value = entry[this.x_axis];
           if (value > max) {
             max = value;
           }
@@ -284,7 +302,7 @@ export default defineComponent({
             min = value;
           }
 
-          value = entry[this.subsets];        
+          value = entry[this.subsets];
           if (value > sub_max) {
             sub_max = value;
           }
@@ -292,7 +310,7 @@ export default defineComponent({
           if (value < sub_min) {
             sub_min = value;
           }
-        })
+        });
       }
 
       let quantization_factor = Number(this.quantization_factor);
@@ -313,8 +331,8 @@ export default defineComponent({
           if (bucket == quantization_factor) {
             bucket -= 1;
           }
-          let lower = min + (quantize_mod * bucket);
-          let upper = min + (quantize_mod * (bucket + 1));
+          let lower = min + quantize_mod * bucket;
+          let upper = min + quantize_mod * (bucket + 1);
           category = `${lower.toFixed(2)} - ${upper.toFixed(2)}`;
         }
 
@@ -332,82 +350,87 @@ export default defineComponent({
           if (bucket == sub_quantization_factor) {
             bucket -= 1;
           }
-          let lower = sub_min + (sub_quantize_mod * bucket);
-          let upper = sub_min + (sub_quantize_mod * (bucket + 1));
+          let lower = sub_min + sub_quantize_mod * bucket;
+          let upper = sub_min + sub_quantize_mod * (bucket + 1);
           set = `${lower.toFixed(2)} - ${upper.toFixed(2)}`;
         }
 
         if (set && !categories[category].sets[set]) {
-            categories[category].sets[set] = {
-                sum: 0,
-                count: 0,
-            };
+          categories[category].sets[set] = {
+            sum: 0,
+            count: 0,
+          };
         }
 
         if (set) {
-            //@HACK, simple way to flag keys as existing without having to run through a contains check
-            subset_keys[set] = true;
-            categories[category].sets[set].sum += entry[this.y_axis];
-            categories[category].sets[set].count += 1;
+          //@HACK, simple way to flag keys as existing without having to run through a contains check
+          subset_keys[set] = true;
+          categories[category].sets[set].sum += entry[this.y_axis];
+          categories[category].sets[set].count += 1;
         }
 
         categories[category].sum += entry[this.y_axis];
         categories[category].count += 1;
       });
 
-
       let keys = Object.keys(categories).sort(key_sort(this.x_axis));
       let subsets = Object.keys(subset_keys).sort(key_sort(this.subsets));
 
-      let sorted_categories = Object.entries(categories).sort(entry_sort(this.x_axis)).map((entry) => entry[1]);
+      let sorted_categories = Object.entries(categories)
+        .sort(entry_sort(this.x_axis))
+        .map((entry) => entry[1]);
 
       const all_series_data = sorted_categories.map(
         (entry) => entry.sum / entry.count
       );
 
-      const counts_series_data = sorted_categories.map(entry => entry.count);
+      const counts_series_data = sorted_categories.map((entry) => entry.count);
 
-      let subset_series: {name: string, data: number[]}[] = subsets.map(value => {
+      let subset_series: { name: string; data: number[] }[] = subsets.map(
+        (value) => {
           return {
-              name: value,
-              data: [],
-          }
-      });
-      let subset_proporition_series: {name: string, data: number[]}[] = subsets.map(value => {
-          return {
-              name: value,
-              data: [],
-          }
+            name: value,
+            data: [],
+          };
+        }
+      );
+      let subset_proporition_series: {
+        name: string;
+        data: number[];
+      }[] = subsets.map((value) => {
+        return {
+          name: value,
+          data: [],
+        };
       });
 
-      let subset_i: {[index: string]: number} = {};
+      let subset_i: { [index: string]: number } = {};
       subsets.forEach((key, index) => {
         subset_i[key] = index;
       });
 
       let expected_length = 1;
       sorted_categories.forEach((value) => {
-          ///let count = value.count;
-          Object.entries(value.sets).forEach((entry) => {
-              let [k, v] = entry;
-              subset_series[subset_i[k]].data.push(v.sum / v.count);
-              subset_proporition_series[subset_i[k]].data.push(v.count);
-          })
+        ///let count = value.count;
+        Object.entries(value.sets).forEach((entry) => {
+          let [k, v] = entry;
+          subset_series[subset_i[k]].data.push(v.sum / v.count);
+          subset_proporition_series[subset_i[k]].data.push(v.count);
+        });
 
-          subset_series.forEach(value => {
-            if (value.data.length < expected_length) {
-              value.data.push(0);
-            }
-          })
-          subset_proporition_series.forEach(value => {
-            if (value.data.length < expected_length) {
-              value.data.push(0);
-            }
-          })
+        subset_series.forEach((value) => {
+          if (value.data.length < expected_length) {
+            value.data.push(0);
+          }
+        });
+        subset_proporition_series.forEach((value) => {
+          if (value.data.length < expected_length) {
+            value.data.push(0);
+          }
+        });
 
-          expected_length += 1;
+        expected_length += 1;
       });
-
 
       this.quantize = quantize;
       this.sub_quantize = sub_quantize;
@@ -424,14 +447,17 @@ export default defineComponent({
           },
           title: {
             //@ts-ignore
-            text: `Averages of ${label_value_map[this.y_axis]} across ${label_value_map[this.x_axis]}`,
+            text: `Averages of ${label_value_map[this.y_axis]} across ${
+            //@ts-ignore
+              label_value_map[this.x_axis]
+            }`,
           },
           xaxis: {
             //@ts-ignore
             categories: keys,
 
             title: {
-            //@ts-ignore
+              //@ts-ignore
               text: label_value_map[this.x_axis],
             },
           },
@@ -461,7 +487,7 @@ export default defineComponent({
             },
 
             title: {
-            //@ts-ignore
+              //@ts-ignore
               text: label_value_map[this.y_axis],
             },
           },
@@ -478,7 +504,7 @@ export default defineComponent({
         series: [
           ...subset_series,
           {
-            name: 'Overall',
+            name: "Overall",
             data: all_series_data,
           },
         ],
@@ -487,7 +513,11 @@ export default defineComponent({
 
           title: {
             //@ts-ignore
-            text: `Averages of  ${label_value_map[this.y_axis]} across ${label_value_map[this.x_axis]} split by ${label_value_map[this.subsets]}`,
+            text: `Averages of  ${label_value_map[this.y_axis]} across ${
+            //@ts-ignore
+              label_value_map[this.x_axis]
+            //@ts-ignore
+            } split by ${label_value_map[this.subsets]}`,
           },
 
           chart: {
@@ -499,31 +529,26 @@ export default defineComponent({
             },
           },
           dataLabels: {
-              enabled: false,
+            enabled: false,
           },
 
           tooltip: {
-
-
-    x: {
-            //@ts-ignore
-          formatter:() => label_value_map[this.subsets],
-      },
-          }
-  
+            x: {
+              //@ts-ignore
+              formatter: () => label_value_map[this.subsets],
+            },
+          },
         },
       };
 
-
-
-    this.counts_chart_options = {
+      this.counts_chart_options = {
         //@ts-ignore
         series: counts_series_data,
         options: {
           ...this.bar_chart_options.options,
 
           title: {
-            text: 'Counts'
+            text: "Counts",
           },
 
           chart: {
@@ -539,21 +564,22 @@ export default defineComponent({
           },
           labels: keys,
           dataLabels: {
-              enabled: true,
-          }
+            enabled: true,
+          },
         },
       };
 
-    this.stacked_counts_chart_options = {
-        series: [
-          ...subset_proporition_series,
-        ],
+      this.stacked_counts_chart_options = {
+        series: [...subset_proporition_series],
         options: {
           ...this.bar_chart_options.options,
 
           title: {
             //@ts-ignore
-            text: `${label_value_map[this.subsets]} distribution by ${label_value_map[this.x_axis]}`,
+            text: `${label_value_map[this.subsets]} distribution by ${
+            //@ts-ignore
+              label_value_map[this.x_axis]
+            }`,
           },
 
           chart: {
@@ -567,53 +593,54 @@ export default defineComponent({
               enabled: keys.length > 50 ? false : true,
             },
           },
-            plotOptions: {
-              bar: {
-                horizontal: true,
-              },
+          plotOptions: {
+            bar: {
+              horizontal: true,
             },
-                xaxis: {
-                //@ts-ignore
-                categories: keys,
+          },
+          xaxis: {
+            //@ts-ignore
+            categories: keys,
 
-                title: {
-                //@ts-ignore
-                text: 'Count',
-                }
+            title: {
+              //@ts-ignore
+              text: "Count",
             },
+          },
 
-            yaxis: {
-                title: {
-                //@ts-ignore
-                text: label_value_map[this.x_axis],
-                },
+          yaxis: {
+            title: {
+              //@ts-ignore
+              text: label_value_map[this.x_axis],
             },
+          },
           dataLabels: {
-              enabled: false,
-          }
+            enabled: false,
+          },
         },
       };
     },
   },
   components: { SingleSelect },
-    watch: {
-        '$route' (to) {
-        if(to.query){ 
-            //@ts-ignore
-            this.x_axis = to.query.x || this.x_axis;
-            //@ts-ignore
-            this.y_axis = to.query.y || this.y_axis;
-            //@ts-ignore
-            this.subsets = to.query.subsets || this.subsets;
-            //@ts-ignore
-            this.quantization_factor = to.query.quantization || this.quantization_factor;
-            //@ts-ignore
-            this.sub_quantization_factor = to.query.sub_quantization || this.sub_quantization_factor;
-            this.render();
-        }    
-       }
+  watch: {
+    $route(to) {
+      if (to.query) {
+        //@ts-ignore
+        this.x_axis = to.query.x || this.x_axis;
+        //@ts-ignore
+        this.y_axis = to.query.y || this.y_axis;
+        //@ts-ignore
+        this.subsets = to.query.subsets || this.subsets;
+        //@ts-ignore
+        this.quantization_factor =
+          to.query.quantization || this.quantization_factor;
+        //@ts-ignore
+        this.sub_quantization_factor =
+          to.query.sub_quantization || this.sub_quantization_factor;
+        this.render();
+      }
     },
-
+  },
 });
 </script>
 
