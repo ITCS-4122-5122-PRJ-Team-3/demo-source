@@ -404,8 +404,7 @@ export default defineComponent({
             type: "solid",
           },
           tooltip: {
-            shared: false,
-            intersect: true,
+            intersect: false,
           },
           legend: {
             show: true,
