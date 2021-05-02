@@ -7,16 +7,18 @@
 
   <h3>Background:</h3>
   <p>
-  The dataset we have chosen is called 'Credit Card customers' from Kaggle, this dataset has information on over ten thousand customers on various categories such as age, salary, marital status, education levels, dependents, credit card limit, and income category. 
+  The dataset we have chosen is called <a href="https://www.kaggle.com/sakshigoyal7/credit-card-customers">'Credit Card customers' from Kaggle</a>, this dataset has information on over ten thousand customers on various categories such as age, salary, marital status, education levels, dependents, credit card limit, and income category. 
   We picked this dataset because there is a large amount of information we can pull from this dataset that will allow us to show insightful information on the topic of credit card use.
   For example, we can make inferences about how different groups of customers handle their money, potential contributing factors, what factors contribute to credit card limits or usage, etc.
   Our main goal with our project is to give the user the ability to answer their questions and give them as much freedom to do so. The user will be presented the data displayed in multiple different ways,
   to really help users come to their own conclusions and hopefully find answers to questions they never knew they had. We have laid out our project into two tabs under 'Visualizations', comparison and relationships.
   The comparison tab will allow users to see multiple visualizations to compare and contrast different categories within the dataset. And for the relationship tab, we have placed our linear regression so users can see the relationships between
   the data.
+  </p>
 
   <h3>How we built our project:</h3>
-  We decided to use Vue 3 to build our project because it is very versatile. It allowed us to combine what we learned in class, such as ApexCharts, and bring new elements into our project. 
+  <p>
+  We decided to use <a href="https://v3.vuejs.org/">Vue 3</a>  to build our project because it is very versatile. It allowed us to combine what we learned in class, such as <a href="https://apexcharts.com/">ApexCharts</a>, and bring new elements into our project. 
   We also liked Vue because of its adaptability and how easy it is to work with outside libraries which allowed us to easily intergrate multiple libraries into our project. 
   And lastly, we liked the look and feel that Vue could bring us with the animations and layout of our project since we wanted it to be very user-focused and allow them to use multiple visualizations 
   at once.

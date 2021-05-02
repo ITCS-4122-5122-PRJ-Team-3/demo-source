@@ -423,7 +423,8 @@ export default defineComponent({
             },
           },
           title: {
-            text: 'Comparison of Averages'
+            //@ts-ignore
+            text: `Averages of ${label_value_map[this.y_axis]} across ${label_value_map[this.x_axis]}`,
           },
           xaxis: {
             //@ts-ignore
@@ -485,7 +486,8 @@ export default defineComponent({
           ...this.bar_chart_options.options,
 
           title: {
-            text: 'Comparison of Averages across subsets'
+            //@ts-ignore
+            text: `Averages of  ${label_value_map[this.y_axis]} across ${label_value_map[this.x_axis]} split by ${label_value_map[this.subsets]}`,
           },
 
           chart: {
@@ -499,6 +501,15 @@ export default defineComponent({
           dataLabels: {
               enabled: false,
           },
+
+          tooltip: {
+
+
+    x: {
+            //@ts-ignore
+          formatter:() => label_value_map[this.subsets],
+      },
+          }
   
         },
       };
@@ -541,7 +552,8 @@ export default defineComponent({
           ...this.bar_chart_options.options,
 
           title: {
-            text: 'Subset Counts'
+            //@ts-ignore
+            text: `${label_value_map[this.subsets]} distribution by ${label_value_map[this.x_axis]}`,
           },
 
           chart: {
@@ -566,7 +578,7 @@ export default defineComponent({
 
                 title: {
                 //@ts-ignore
-                text: label_value_map[this.y_axis],
+                text: 'Count',
                 }
             },
 
