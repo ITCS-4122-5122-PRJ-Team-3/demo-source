@@ -11,9 +11,9 @@
   We picked this dataset because there is a large amount of information we can pull from this dataset that will allow us to show insightful information on the topic of credit card use.
   For example, we can make inferences about how different groups of customers handle their money, potential contributing factors, what factors contribute to credit card limits or usage, etc.
   Our main goal with our project is to give the user the ability to answer their questions and give them as much freedom to do so. The user will be presented the data displayed in multiple different ways,
-  to really help users come to their own conclusions and hopefully find answers to questions they never knew they had. We have laid out our project into two tabs under 'Visualizations', comparison and relationships.
-  The comparison tab will allow users to see multiple visualizations to compare and contrast different categories within the dataset. And for the relationship tab, we have placed our linear regression so users can see the relationships between
-  the data.
+  to really help users come to their own conclusions and hopefully find answers to questions they never knew they had. We have laid out our visualizations into three sections under 'Visualizations', comparison, relationships, and linear regression.
+  The comparison tab will allow users to see multiple visualizations to compare and contrast different categories within the dataset. And for the relationship tab, we have placed two visualizaiton to show the relationshp between variables.
+  Lastly, the linear regression tab has our linear regressions; we have one backed by a scatter plot and another backed by a line graph.
   </p>
 
   <h3>How we built our project:</h3>
