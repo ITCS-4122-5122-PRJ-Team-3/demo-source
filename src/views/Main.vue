@@ -150,16 +150,19 @@ a {
     display: flex;
     
     flex-direction: column;
+    flex-grow: 1;
+    width: 10%;
+    padding: 0 10%;
 }
 
 .chart-container {
     display: flex;
-    justify-content: center;
     flex-direction: column;
+    flex-grow: 2;
 }
 
 .viz-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
 }
 </style>
