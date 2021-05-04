@@ -38,13 +38,47 @@
 
       <h3>Questions</h3>
       <div class="question-container">
-      <router-link :to="{name: 'Relationship', query: {x:'Dependent_count', y: 'Avg_Utilization_Ratio', subsets: 'Gender', quantization: 10}}">What is the relationship between average utilization ratio and dependent count? 
-</router-link>
-      <router-link :to="{name: 'Relationship', query: {x:'Customer_Age', y: 'Total_Trans_Amt', subsets: 'Total_Revolving_Bal', quantization: 10, sub_quantization: 2}}">What is the relationship between transaction count, age, and total balance? 
-</router-link>
-      <router-link :to="{name: 'Relationship', query: {x:'Total_Revolving_Bal', y: 'Credit_Limit', subsets: 'Income_Category', quantization: 5}}">What is the relationships between credit limit, total balance, and income?
-</router-link>
-    </div>
+        <router-link
+          :to="{
+            name: 'Relationship',
+            query: {
+              x: 'Dependent_count',
+              y: 'Avg_Utilization_Ratio',
+              subsets: 'Gender',
+              quantization: 10,
+            },
+          }"
+          >What is the relationship between average utilization ratio and
+          dependent count?
+        </router-link>
+        <router-link
+          :to="{
+            name: 'Relationship',
+            query: {
+              x: 'Customer_Age',
+              y: 'Total_Trans_Amt',
+              subsets: 'Total_Revolving_Bal',
+              quantization: 10,
+              sub_quantization: 2,
+            },
+          }"
+          >What is the relationship between transaction count, age, and total
+          balance?
+        </router-link>
+        <router-link
+          :to="{
+            name: 'Relationship',
+            query: {
+              x: 'Total_Revolving_Bal',
+              y: 'Credit_Limit',
+              subsets: 'Income_Category',
+              quantization: 5,
+            },
+          }"
+          >What is the relationships between credit limit, total balance, and
+          income?
+        </router-link>
+      </div>
     </div>
     <div class="chart-container">
       <apexchart
@@ -275,28 +309,25 @@ export default defineComponent({
       let sub_min = Number.MAX_VALUE;
       let sub_max = Number.MIN_VALUE;
       //@ts-ignore
-      if (quantize || sub_quantize) {
-        //@ts-ignore
-        this.data?.forEach((entry: { [x: string]: any }) => {
-          let value = entry[this.x_axis];
-          if (value > max) {
-            max = value;
-          }
+      this.data?.forEach((entry: { [x: string]: any }) => {
+        let value = entry[this.x_axis];
+        if (value > max) {
+          max = value;
+        }
 
-          if (value < min) {
-            min = value;
-          }
+        if (value < min) {
+          min = value;
+        }
 
-          value = entry[this.subsets];
-          if (value > sub_max) {
-            sub_max = value;
-          }
+        value = entry[this.subsets];
+        if (value > sub_max) {
+          sub_max = value;
+        }
 
-          if (value < sub_min) {
-            sub_min = value;
-          }
-        });
-      }
+        if (value < sub_min) {
+          sub_min = value;
+        }
+      });
 
       let quantization_factor = Number(
         this.quantization_factor == "None" ? "1" : this.quantization_factor
@@ -407,7 +438,7 @@ export default defineComponent({
           if (inner.data.length < expected_length) {
             inner.data.push({
               y: 0,
-              x: average_of_range(value[0])
+              x: average_of_range(value[0]),
             });
           }
         });
